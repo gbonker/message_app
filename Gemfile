@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'bcrypt-ruby', :require => 'bcrypt'
+gem 'pry-rails', group: 'development'
+gem 'semantic-ui-sass', github: 'doabit/semantic-ui-sass', branch: 'v1.0beta'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
