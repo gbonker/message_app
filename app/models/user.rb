@@ -3,10 +3,13 @@ class User < ActiveRecord::Base
 	attr_accessor :password
 	before_save :encrypt_password
 
-	validates_confirmation_of :password
+	validates_confirmation_of :password, :on => :create, :message => "Passwords do not match"
 	validates_presence_of :password, :on => :create, :message => "can't be blank"
-	validates_presence_of :email
-	validates_uniqueness_of :email
+	validates_presence_of :email, :on => :create, :message => "can't be blank"
+	validates_presence_of :first_name, :last_name, :role
+	validates_uniqueness_of :email, :on => :create
+	validates_format_of :email, with: /\A[\w]([^@\s,;]+)@(([\w-]+\.)+[a-z]{2,})\z/i, message: "is not a valid format"
+	validates_inclusion_of :role, in: %w( patient care_manager )
 
   def self.authenticate(email, password)
     user = find_by_email(email)
