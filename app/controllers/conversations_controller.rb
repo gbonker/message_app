@@ -4,6 +4,8 @@ class ConversationsController < ApplicationController
 	def index
  		@users = User.all
  		@conversations = Conversation.all
+ 		@patients = User.where(role: "patient")
+ 		@care_managers = User.where(role: "care_manager")
  	end
 
 	def create
