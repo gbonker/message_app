@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def full_name
+    first_name + " " + last_name
+  end
+
 	def encrypt_password
 		if password.present?
 			self.password_salt = BCrypt::Engine.generate_salt

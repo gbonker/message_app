@@ -1,32 +1,32 @@
-<h1>Conversations#index</h1>
+<% if current_user.role == "care_manager" %>
+	<h1>Care Manager Dashboard</h1>
+<% else %>
+	<h1>Your Messages</h1>
+<% end %>
 
-<div class="ui segment">
- 	<h3>Mailbox</h3>
- 	<div class="ui list">
-  	<div class="item">
-   		<% @conversations.each do |conversation| %>
-   			<% if conversation.sender_id == current_user.id || conversation.recipient_id == current_user.id %>
-    			<% if conversation.sender_id == current_user.id %>
-      			<% recipient = User.find(conversation.recipient_id) %>
-    			<% else %>
-      			<% recipient = User.find(conversation.sender_id) %>
-    			<% end %>
-    			<%= link_to recipient.first_name, conversation_messages_path(conversation)%>
-   			<% end %>
-  		<% end %>
-  	</div>
- 	</div>
-</div>
+<h2>Inbox</h2>
+<% @conversations.each do |conversation| %>
+	<% if conversation.sender_id == current_user.id || conversation.recipient_id == current_user.id %>
+		<% if conversation.sender_id == current_user.id %>
+			<% recipient = User.find(conversation.recipient_id) %>
+		<% else %>
+			<% recipient = User.find(conversation.sender_id) %>
+		<% end %>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<%= link_to recipient.full_name, conversation_messages_path(conversation)%>
+			</div>
+		</div>
+	<% end %>
+<% end %>
 
-<div class="ui segment">
- 	<h3>All Users</h3>
-  <div class="ui list">
-   	<% @users.each do |user| %>
-    	<% if user.id != current_user.id %>
-     		<div class="item">
-   				<%= user.first_name %> <%= link_to 'Message me!', conversations_path(sender_id: current_user.id, recipient_id: user.id), method: 'post' %>
- 				</div>
-  		<% end %>
- 		<% end %>
- 	</div>
-</div>
+<h2>All Users</h2>
+<% @users.each do |user| %>
+	<% if user.id != current_user.id %>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<%= link_to user.full_name, conversations_path(sender_id: current_user.id, recipient_id: user.id), method: 'post' %>
+			</div>
+		</div>
+	<% end %>
+<% end %>

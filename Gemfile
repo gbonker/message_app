@@ -1,8 +1,10 @@
 source 'https://rubygems.org'
 
 gem 'bcrypt-ruby', :require => 'bcrypt'
-gem 'pry-rails', group: 'development'
 gem 'semantic-ui-sass', github: 'doabit/semantic-ui-sass', branch: 'v1.0beta'
+gem 'bootstrap-sass', '~> 3.2.0'
+gem 'autoprefixer-rails'
+gem 'font-awesome-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -50,6 +52,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'quiet_assets'
   gem 'faker'
+  gem 'pry-rails'
 end
 
 # Gems used only in testing
