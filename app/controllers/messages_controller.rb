@@ -13,9 +13,12 @@ class MessagesController < ApplicationController
       @over_ten = false
       @messages = @conversation.messages
     end
-    if @messages.last.present?
-      if @messages.last.user_id != current_user.id
-        @messages.last.read = true
+    if @messages.unread.count > 0
+      @messages.unread.each do |message|
+        if message.user_id != current_user.id
+          message.read = true
+          message.save
+        end
       end
     end
     @message = @conversation.messages.new

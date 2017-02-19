@@ -5,8 +5,10 @@
 <% end %>
 
 <h2>Inbox</h2>
-<% @conversations.each do |conversation| %>
-	<% if conversation.sender_id == current_user.id || conversation.recipient_id == current_user.id %>
+<% if @conversations.empty? %>
+	No messages
+<% else %>
+	<% @conversations.each do |conversation| %>
 		<% if conversation.sender_id == current_user.id %>
 			<% recipient = User.find(conversation.recipient_id) %>
 		<% else %>
@@ -15,18 +17,25 @@
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<%= link_to recipient.full_name, conversation_messages_path(conversation)%>
+				<% if conversation.messages.last.user_id != current_user.id %>
+					<% if conversation.messages.unread.count > 0 %>
+						<strong>(<%= conversation.messages.unread.count %> unread)</strong>
+					<% end %>
+				<% end %>
 			</div>
 		</div>
 	<% end %>
 <% end %>
 
-<h2>All Users</h2>
-<% @users.each do |user| %>
-	<% if user.id != current_user.id %>
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<%= link_to user.full_name, conversations_path(sender_id: current_user.id, recipient_id: user.id), method: 'post' %>
+<% if current_user.role == "care_manager" %>
+	<h2>All Patients</h2>
+	<% @patients.each do |user| %>
+		<% if user.id != current_user.id %>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<%= link_to user.full_name, conversations_path(sender_id: current_user.id, recipient_id: user.id), method: 'post' %>
+				</div>
 			</div>
-		</div>
+		<% end %>
 	<% end %>
 <% end %>

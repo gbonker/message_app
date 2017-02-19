@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
 	validates_format_of :email, with: /\A[\w]([^@\s,;]+)@(([\w-]+\.)+[a-z]{2,})\z/i, message: "is not a valid format"
 	validates_inclusion_of :role, in: %w( patient care_manager )
 
+	scope :alphabetical, -> { order('first_name, last_name') }
+
   def self.authenticate(email, password)
     user = find_by_email(email)
     if user && user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
