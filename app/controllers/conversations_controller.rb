@@ -2,10 +2,10 @@ class ConversationsController < ApplicationController
  	before_action :authenticate_user
 	
 	def index
- 		@users = User.all
- 		@conversations = Conversation.all
- 		@patients = User.where(role: "patient")
- 		@care_managers = User.where(role: "care_manager")
+ 		@users = User.all.alphabetical
+ 		@conversations = Conversation.involving(current_user)
+ 		@patients = User.where(role: "patient").alphabetical
+ 		@care_managers = User.where(role: "care_manager").alphabetical
  	end
 
 	def create
