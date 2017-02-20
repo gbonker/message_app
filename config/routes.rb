@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :sessions
   resources :conversations do
     resources :messages
+    resource :user_conversations
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -3,6 +3,10 @@ class User < ActiveRecord::Base
 	attr_accessor :password
 	before_save :encrypt_password
 
+	has_many :user_conversations
+	has_many :chatrooms, through: :user_conversations
+	has_many :messages
+
 	validates_confirmation_of :password, :on => :create, :message => "Passwords do not match"
 	validates_presence_of :password, :on => :create, :message => "can't be blank"
 	validates_presence_of :email, :on => :create, :message => "can't be blank"
