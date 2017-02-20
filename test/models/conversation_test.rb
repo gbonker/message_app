@@ -6,11 +6,8 @@ class ConversationTest < ActiveSupport::TestCase
   # end
 
   # test relationships
-  should belong_to(:sender)
-  should belong_to(:recipient)
+  should have_many(:user_conversations)
+  should have_many(:users).through(:user_conversations)
   should have_many(:messages)
-
-  # test validations
-  should validate_uniqueness_of(:sender_id)
 
 end

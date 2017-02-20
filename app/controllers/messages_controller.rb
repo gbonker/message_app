@@ -14,12 +14,29 @@ class MessagesController < ApplicationController
       @messages = @conversation.messages
     end
     if @messages.unread.count > 0
-      @messages.unread.each do |message|
-        if message.user_id != current_user.id
-          message.read = true
-          message.save
+      if current_user.role == "patient"
+        @messages.unread.each do |message|
+          if message.user_id != current_user.id
+            message.read = true
+            message.save
+          end
         end
-      end
+      else # care manager
+        @messages.unread.each do |message|
+          if message.user_id != current_user.id
+            if message.user.role == "patient"
+              message.read = true
+              message.save
+            end
+          end
+        end
+      end  
+      #@messages.unread.each do |message|
+      #  if message.user_id != current_user.id
+      #    message.read = true
+      #    message.save
+      #  end
+      #end
     end
     @message = @conversation.messages.new
   end
@@ -30,6 +47,7 @@ class MessagesController < ApplicationController
   
   def create
     @message = @conversation.messages.new(message_params)
+    @message.user = current_user
     if @message.save
       redirect_to conversation_messages_path(@conversation)
     end
